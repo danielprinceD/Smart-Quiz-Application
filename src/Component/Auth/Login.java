@@ -6,6 +6,7 @@ package Component.Auth;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import Home.Home;
+import Component.Admin.*;
 /**
  *
  * @author daniel
@@ -95,6 +96,11 @@ public class Login extends javax.swing.JPanel {
         jButton1.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(51, 0, 0));
         jButton1.setText("Login");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -167,7 +173,10 @@ public class Login extends javax.swing.JPanel {
                 Home.ID = res.getInt("id");
                 
                 JOptionPane.showMessageDialog(this , "Welcome Home " + res.getString("name") );
-                 
+                AdminHome admin = new AdminHome();
+                Home hm = new Home();
+                hm.setVisible(false);
+                admin.setVisible(true);
                 }else {
                     
             JOptionPane.showMessageDialog(this , "Enter Valid Credential" , "Credential Incorrect" , 2 );
@@ -185,10 +194,15 @@ public class Login extends javax.swing.JPanel {
         }catch(Exception ex)
         {
             JOptionPane.showMessageDialog(this , ex.getMessage() , "Exception" , 2 );
+            
         }
         
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

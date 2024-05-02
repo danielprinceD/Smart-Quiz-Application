@@ -1,20 +1,34 @@
+package Component.Admin;
+
+import Home.Home;
+import java.sql.*;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Component.Admin;
 
 /**
  *
  * @author daniel
  */
 public class AdminHome extends javax.swing.JFrame {
-
+     DashboardComponent dash = new DashboardComponent();
+     ManageBatch mb = new ManageBatch();
+     ManageQuestions mq = new ManageQuestions();
+     ManageQuiz mquiz = new ManageQuiz();
+     Ranking rk = new Ranking();
+     AssignQuiz aq = new AssignQuiz();
+     ManageStudents mstud = new ManageStudents();
+     
     /**
-     * Creates new form Home
+     * Creates new form Register
      */
     public AdminHome() {
         initComponents();
+        
+                greeter.setText("Welcome Home " + Home.USER + "...!");
+        
     }
 
     /**
@@ -26,21 +40,447 @@ public class AdminHome extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        mainpanel = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        quizbtn = new javax.swing.JButton();
+        dashbtn = new javax.swing.JButton();
+        batchbtn = new javax.swing.JButton();
+        questbtn = new javax.swing.JButton();
+        assignbtn = new javax.swing.JButton();
+        studentsbtn = new javax.swing.JButton();
+        rankingbtn = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
+        changeable = new javax.swing.JPanel();
+        greeter = new javax.swing.JLabel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        setPreferredSize(new java.awt.Dimension(1500, 1000));
+        addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                formComponentAdded(evt);
+            }
+        });
+
+        mainpanel.setBackground(new java.awt.Color(255, 255, 255));
+        mainpanel.setPreferredSize(new java.awt.Dimension(800, 700));
+        mainpanel.setLayout(new java.awt.BorderLayout());
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 153));
+
+        jButton1.setBackground(new java.awt.Color(255, 51, 51));
+        jButton1.setForeground(new java.awt.Color(255, 255, 204));
+        jButton1.setBorder(null);
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Smart Quiz System");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 578, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
+
+        mainpanel.add(jPanel1, java.awt.BorderLayout.PAGE_START);
+
+        jPanel3.setBackground(new java.awt.Color(252, 252, 201));
+
+        quizbtn.setBackground(new java.awt.Color(255, 255, 153));
+        quizbtn.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
+        quizbtn.setText("Manage Quiz");
+        quizbtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                quizbtnMouseClicked(evt);
+            }
+        });
+        quizbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quizbtnActionPerformed(evt);
+            }
+        });
+
+        dashbtn.setBackground(new java.awt.Color(255, 255, 153));
+        dashbtn.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
+        dashbtn.setText("Dashboard");
+        dashbtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dashbtnMouseClicked(evt);
+            }
+        });
+        dashbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dashbtnActionPerformed(evt);
+            }
+        });
+
+        batchbtn.setBackground(new java.awt.Color(255, 255, 153));
+        batchbtn.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
+        batchbtn.setText("manage Batch");
+        batchbtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                batchbtnMouseClicked(evt);
+            }
+        });
+        batchbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                batchbtnActionPerformed(evt);
+            }
+        });
+
+        questbtn.setBackground(new java.awt.Color(255, 255, 153));
+        questbtn.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
+        questbtn.setText("Manage Questions");
+        questbtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                questbtnMouseClicked(evt);
+            }
+        });
+        questbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                questbtnActionPerformed(evt);
+            }
+        });
+
+        assignbtn.setBackground(new java.awt.Color(255, 255, 153));
+        assignbtn.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
+        assignbtn.setText("Assign Quiz");
+        assignbtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                assignbtnMouseClicked(evt);
+            }
+        });
+        assignbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                assignbtnActionPerformed(evt);
+            }
+        });
+
+        studentsbtn.setBackground(new java.awt.Color(255, 255, 153));
+        studentsbtn.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
+        studentsbtn.setText("Manage Students");
+        studentsbtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                studentsbtnMouseClicked(evt);
+            }
+        });
+        studentsbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentsbtnActionPerformed(evt);
+            }
+        });
+
+        rankingbtn.setBackground(new java.awt.Color(255, 255, 153));
+        rankingbtn.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
+        rankingbtn.setText("Ranking");
+        rankingbtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rankingbtnMouseClicked(evt);
+            }
+        });
+        rankingbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rankingbtnActionPerformed(evt);
+            }
+        });
+
+        jButton9.setBackground(new java.awt.Color(255, 51, 0));
+        jButton9.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
+        jButton9.setForeground(new java.awt.Color(255, 255, 255));
+        jButton9.setText("Logout");
+        jButton9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton9MouseClicked(evt);
+            }
+        });
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(dashbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(quizbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(batchbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+            .addComponent(questbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+            .addComponent(assignbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+            .addComponent(studentsbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+            .addComponent(rankingbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+            .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(68, 68, 68)
+                .addComponent(dashbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(quizbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(batchbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(questbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(assignbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(studentsbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(rankingbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(149, Short.MAX_VALUE))
+        );
+
+        mainpanel.add(jPanel3, java.awt.BorderLayout.LINE_START);
+
+        changeable.setBackground(new java.awt.Color(255, 255, 255));
+
+        greeter.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 18)); // NOI18N
+        greeter.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        greeter.setText("Welcome Home ... !");
+
+        javax.swing.GroupLayout changeableLayout = new javax.swing.GroupLayout(changeable);
+        changeable.setLayout(changeableLayout);
+        changeableLayout.setHorizontalGroup(
+            changeableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(changeableLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(greeter, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        changeableLayout.setVerticalGroup(
+            changeableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(changeableLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(greeter, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(606, Short.MAX_VALUE))
+        );
+
+        mainpanel.add(changeable, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(mainpanel, java.awt.BorderLayout.CENTER);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+         
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private void quizbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quizbtnActionPerformed
+      
+           
+    }//GEN-LAST:event_quizbtnActionPerformed
+
+    private void dashbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dashbtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dashbtnActionPerformed
+
+    private void dashbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashbtnMouseClicked
+        mainpanel.remove(changeable);
+        
+        mainpanel.remove(dash);
+         mainpanel.remove(mquiz);
+         mainpanel.remove(mb);
+         mainpanel.remove(aq);
+         mainpanel.remove(mq);
+         mainpanel.remove(rk);
+         mainpanel.remove(mstud);
+         mb.setVisible(false);
+         mq.setVisible(false);
+         mquiz.setVisible(false);
+         rk.setVisible(false);
+         aq.setVisible(false);
+         mstud.setVisible(false);
+         dash.setVisible(true);
+         mainpanel.add(dash);
+    }//GEN-LAST:event_dashbtnMouseClicked
+
+    private void quizbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_quizbtnMouseClicked
+        
+        mainpanel.remove(changeable);
+        mainpanel.remove(dash);
+         mainpanel.remove(mquiz);
+         mainpanel.remove(mb);
+         mainpanel.remove(aq);
+         mainpanel.remove(mq);
+         mainpanel.remove(rk);
+         mainpanel.remove(mstud);
+        dash.setVisible(false);
+        mq.setVisible(false);
+        mb.setVisible(false);
+         rk.setVisible(false);
+         aq.setVisible(false);
+            mquiz.setVisible(true);
+           mstud.setVisible(false);      
+        mainpanel.add(mquiz);
+            
+    }//GEN-LAST:event_quizbtnMouseClicked
+
+    private void batchbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_batchbtnMouseClicked
+        mainpanel.remove(changeable);
+        mainpanel.remove(dash);
+         mainpanel.remove(mquiz);
+         mainpanel.remove(mb);
+         mainpanel.remove(aq);
+         mainpanel.remove(mq);
+         mainpanel.remove(rk);
+         mainpanel.remove(mstud);
+        dash.setVisible(false);
+        mq.setVisible(false);
+         mquiz.setVisible(false);
+         rk.setVisible(false);
+         aq.setVisible(false);
+         mstud.setVisible(false);   
+            mb.setVisible(true);
+                 
+        mainpanel.add(mb);
+    }//GEN-LAST:event_batchbtnMouseClicked
+
+    private void batchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_batchbtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_batchbtnActionPerformed
+
+    private void questbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_questbtnMouseClicked
+        mainpanel.remove(changeable);
+        mainpanel.remove(dash);
+         mainpanel.remove(mquiz);
+         mainpanel.remove(mb);
+         mainpanel.remove(aq);
+         mainpanel.remove(mq);
+         mainpanel.remove(rk);
+         mainpanel.remove(mstud);
+        dash.setVisible(false);
+         mquiz.setVisible(false);
+         rk.setVisible(false);
+            mb.setVisible(false);
+         aq.setVisible(false);
+         mstud.setVisible(false);   
+        mq.setVisible(true);
+                 
+        mainpanel.add(mq);
+    }//GEN-LAST:event_questbtnMouseClicked
+
+    private void questbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_questbtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_questbtnActionPerformed
+
+    private void assignbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_assignbtnMouseClicked
+         mainpanel.remove(changeable);
+         mainpanel.remove(dash);
+         mainpanel.remove(mquiz);
+         mainpanel.remove(mb);
+         mainpanel.remove(aq);
+         mainpanel.remove(mq);
+         mainpanel.remove(rk);
+         mainpanel.remove(mstud);
+        dash.setVisible(false);
+         mquiz.setVisible(false);
+         rk.setVisible(false);
+            mb.setVisible(false);
+         mstud.setVisible(false);   
+        mq.setVisible(false);
+         aq.setVisible(true);
+                 
+        mainpanel.add(aq);
+    }//GEN-LAST:event_assignbtnMouseClicked
+
+    private void assignbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assignbtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_assignbtnActionPerformed
+
+    private void studentsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_studentsbtnMouseClicked
+        mainpanel.remove(changeable);
+        mainpanel.remove(dash);
+         mainpanel.remove(mquiz);
+         mainpanel.remove(mb);
+         mainpanel.remove(aq);
+         mainpanel.remove(mq);
+         mainpanel.remove(rk);
+        dash.setVisible(false);
+         mquiz.setVisible(false);
+         rk.setVisible(false);
+            mb.setVisible(false);
+         aq.setVisible(false);
+        mq.setVisible(false);
+                 mstud.setVisible(true);   
+        mainpanel.add(mstud);
+    }//GEN-LAST:event_studentsbtnMouseClicked
+
+    private void studentsbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentsbtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_studentsbtnActionPerformed
+
+    private void rankingbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rankingbtnMouseClicked
+        
+         mainpanel.remove(changeable);
+         mainpanel.remove(dash);
+         mainpanel.remove(mquiz);
+         mainpanel.remove(mb);
+         mainpanel.remove(aq);
+         mainpanel.remove(mq);
+         mainpanel.remove(mstud);
+         mainpanel.remove(rk);
+         
+         dash.setVisible(false);
+         mquiz.setVisible(false);
+         mb.setVisible(false);
+         aq.setVisible(false);
+         mq.setVisible(false);
+         mstud.setVisible(false);   
+         rk.setVisible(true);
+         mainpanel.add(rk);
+    }//GEN-LAST:event_rankingbtnMouseClicked
+
+    private void rankingbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rankingbtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rankingbtnActionPerformed
+
+    private void jButton9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseClicked
+        Home.USER = null;
+        Home.ID = 0;
+        Home h = new Home();
+        h.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton9MouseClicked
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void formComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_formComponentAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formComponentAdded
 
     /**
      * @param args the command line arguments
@@ -69,15 +509,34 @@ public class AdminHome extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new AdminHome().setVisible(true);
+                
             }
+            
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton assignbtn;
+    private javax.swing.JButton batchbtn;
+    private javax.swing.JPanel changeable;
+    private javax.swing.JButton dashbtn;
+    private javax.swing.JLabel greeter;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton9;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel mainpanel;
+    private javax.swing.JButton questbtn;
+    private javax.swing.JButton quizbtn;
+    private javax.swing.JButton rankingbtn;
+    private javax.swing.JButton studentsbtn;
     // End of variables declaration//GEN-END:variables
 }

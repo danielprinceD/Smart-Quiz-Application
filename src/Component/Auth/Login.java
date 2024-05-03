@@ -7,6 +7,7 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import Home.Home;
 import Component.Admin.*;
+import Component.User.UserHome;
 /**
  *
  * @author daniel
@@ -15,7 +16,7 @@ public class Login extends javax.swing.JPanel {
      final private String username = "root";
      final private String password = "";
      final private String database_name = "quiz";
-     final private String table_name = "user";
+     final private String table_name = "users";
      Connection con;
      PreparedStatement pst;
     /**
@@ -166,7 +167,7 @@ public class Login extends javax.swing.JPanel {
             if(email.equals("admin@gmail.com") && pass.equals("admin")){
                 JOptionPane.showMessageDialog(this , "Welcome Home " + "Admin" );
                 Home.USER = "Admin";
-                Home.ID = 0;
+                Home.ID = (res.next()) ? res.getInt("id") : 0;
                 AdminHome admin = new AdminHome();
                 Home hm = new Home();
                 hm.dispose();
@@ -183,6 +184,11 @@ public class Login extends javax.swing.JPanel {
                 Home.ID = res.getInt("id");
                 
                 JOptionPane.showMessageDialog(this , "Welcome Home " + res.getString("name") );
+                
+                UserHome user = new UserHome();
+                user.setVisible(true);
+                Home hm = new Home();
+                hm.dispose();
                 
                 }else {
                     

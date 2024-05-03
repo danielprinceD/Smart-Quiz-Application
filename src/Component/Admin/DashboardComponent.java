@@ -4,19 +4,138 @@
  */
 package Component.Admin;
 
+import java.sql.*;
+import java.util.Collections;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author daniel
  */
 public class DashboardComponent extends javax.swing.JPanel {
-
+    Connection conn;
+    PreparedStatement pst;
     /**
      * Creates new form Dashboard
      */
     public DashboardComponent() {
         initComponents();
+        showQuiz();
+        showStdents();
+        showBatch();
+        showQuestion();
+        leadership();
     }
 
+        
+   final  public void showQuiz()
+    {
+         int count = 0;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/quiz", "root","");
+            pst = conn.prepareStatement("select * from managequiz");
+            ResultSet rs;
+            rs = pst.executeQuery();
+            while(rs.next())count++;
+            quiz.setText(""+count);
+        
+         
+        }catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(this , ex.getMessage() , "Exception" , 2 );
+        }
+    }
+   final  public void showStdents()
+    {
+         int count = 0;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/quiz", "root","");
+            pst = conn.prepareStatement("select * from users");
+            ResultSet rs;
+            rs = pst.executeQuery();
+            while(rs.next())count++;
+            stud.setText(""+count);
+        
+         
+        }catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(this , ex.getMessage() , "Exception" , 2 );
+        }
+    }
+   final  public void showBatch()
+    {
+         int count = 0;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/quiz", "root","");
+            pst = conn.prepareStatement("select * from managebatch");
+            ResultSet rs;
+            rs = pst.executeQuery();
+            while(rs.next())count++;
+            batch.setText(""+count);
+        
+         
+        }catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(this , ex.getMessage() , "Exception" , 2 );
+        }
+    }
+   final  public void showQuestion()
+    {
+         int count = 0;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/quiz", "root","");
+            pst = conn.prepareStatement("select * from question");
+            ResultSet rs;
+            rs = pst.executeQuery();
+            while(rs.next())count++;
+            quest.setText(""+count);
+        
+         
+        }catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(this , ex.getMessage() , "Exception" , 2 );
+        }
+    }
+    
+   final public void leadership()
+   {
+       try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/quiz", "root","");
+            pst = conn.prepareStatement("select * from profile order by points desc");
+            
+            ResultSet rs = pst.executeQuery();
+            ResultSetMetaData metaData = rs.getMetaData();
+            
+            int count = metaData.getColumnCount();
+            
+            DefaultTableModel dtm = (DefaultTableModel) topper.getModel();
+            dtm.setRowCount(0);
+            
+            while(rs.next()){
+                Vector v = new Vector();
+                for(int i = 0; i <= count; i++){
+                    v.add(rs.getString("id"));
+                    v.add(rs.getString("name"));
+                    v.add(rs.getString("points"));
+                    
+                }
+                dtm.addRow(v);
+            }
+        }catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(this , ex.getMessage() , "Exception" , 2 );
+        }
+   }
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,19 +148,19 @@ public class DashboardComponent extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        quiz = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        stud = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        quest = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        batch = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        topper = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new java.awt.GridBagLayout());
@@ -53,9 +172,9 @@ public class DashboardComponent extends javax.swing.JPanel {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("No of Quiz");
 
-        jLabel2.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 24)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("0");
+        quiz.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 24)); // NOI18N
+        quiz.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        quiz.setText("0");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -68,7 +187,7 @@ public class DashboardComponent extends javax.swing.JPanel {
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(82, 82, 82)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(quiz, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -77,7 +196,7 @@ public class DashboardComponent extends javax.swing.JPanel {
                 .addGap(19, 19, 19)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(quiz, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(37, Short.MAX_VALUE))
         );
 
@@ -97,9 +216,9 @@ public class DashboardComponent extends javax.swing.JPanel {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("No of students");
 
-        jLabel4.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 24)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("0");
+        stud.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 24)); // NOI18N
+        stud.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        stud.setText("0");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -112,7 +231,7 @@ public class DashboardComponent extends javax.swing.JPanel {
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(82, 82, 82)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(stud, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -121,7 +240,7 @@ public class DashboardComponent extends javax.swing.JPanel {
                 .addGap(19, 19, 19)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(stud, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(37, Short.MAX_VALUE))
         );
 
@@ -141,9 +260,9 @@ public class DashboardComponent extends javax.swing.JPanel {
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("No of Question");
 
-        jLabel6.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 24)); // NOI18N
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("0");
+        quest.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 24)); // NOI18N
+        quest.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        quest.setText("0");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -156,7 +275,7 @@ public class DashboardComponent extends javax.swing.JPanel {
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(82, 82, 82)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(quest, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -165,7 +284,7 @@ public class DashboardComponent extends javax.swing.JPanel {
                 .addGap(19, 19, 19)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(quest, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(37, Short.MAX_VALUE))
         );
 
@@ -185,9 +304,9 @@ public class DashboardComponent extends javax.swing.JPanel {
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("No of Batches");
 
-        jLabel8.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 24)); // NOI18N
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("0");
+        batch.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 24)); // NOI18N
+        batch.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        batch.setText("0");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -200,7 +319,7 @@ public class DashboardComponent extends javax.swing.JPanel {
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(82, 82, 82)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(batch, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -209,7 +328,7 @@ public class DashboardComponent extends javax.swing.JPanel {
                 .addGap(19, 19, 19)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(batch, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(37, Short.MAX_VALUE))
         );
 
@@ -224,9 +343,9 @@ public class DashboardComponent extends javax.swing.JPanel {
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 204));
 
-        jTable1.setBackground(new java.awt.Color(255, 255, 204));
-        jTable1.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        topper.setBackground(new java.awt.Color(255, 255, 204));
+        topper.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
+        topper.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -242,7 +361,7 @@ public class DashboardComponent extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(topper);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -274,20 +393,20 @@ public class DashboardComponent extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel batch;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel quest;
+    private javax.swing.JLabel quiz;
+    private javax.swing.JLabel stud;
+    private javax.swing.JTable topper;
     // End of variables declaration//GEN-END:variables
 }

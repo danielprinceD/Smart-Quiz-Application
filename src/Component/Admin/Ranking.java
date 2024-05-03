@@ -4,19 +4,62 @@
  */
 package Component.Admin;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author daniel
  */
 public class Ranking extends javax.swing.JPanel {
-
+Connection conn;
+    PreparedStatement pst;
     /**
      * Creates new form Ranking
      */
     public Ranking() {
         initComponents();
+        leadership();
     }
 
+    final public void leadership()
+   {
+       try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/quiz", "root","");
+            pst = conn.prepareStatement("select * from profile order by points desc");
+            
+            ResultSet rs = pst.executeQuery();
+            ResultSetMetaData metaData = rs.getMetaData();
+            
+            int count = metaData.getColumnCount();
+            
+            DefaultTableModel dtm = (DefaultTableModel) topper.getModel();
+            dtm.setRowCount(0);
+            
+            while(rs.next()){
+                Vector v = new Vector();
+                for(int i = 0; i <= count; i++){
+                    v.add(rs.getString("id"));
+                    v.add(rs.getString("name"));
+                    v.add(rs.getString("branch"));
+                    v.add(rs.getString("points"));
+                    
+                }
+                dtm.addRow(v);
+            }
+        }catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(this , ex.getMessage() , "Exception" , 2 );
+        }
+   }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,12 +71,13 @@ public class Ranking extends javax.swing.JPanel {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        topper = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(255, 255, 204));
         setLayout(new java.awt.GridBagLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        topper.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -41,7 +85,7 @@ public class Ranking extends javax.swing.JPanel {
                 "Id", "Name", "Batch", "points"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(topper);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -73,6 +117,6 @@ public class Ranking extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable topper;
     // End of variables declaration//GEN-END:variables
 }

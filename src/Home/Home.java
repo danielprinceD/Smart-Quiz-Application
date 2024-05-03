@@ -18,6 +18,7 @@ public class Home extends javax.swing.JFrame {
         
     public static int ID = 0;
     public static String USER = null;
+    public static String BATCH = null;
 
         Login log = new Login();
         Register reg = new Register();

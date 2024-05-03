@@ -4,17 +4,99 @@
  */
 package Component.User;
 
+import Component.Admin.ManageBatch;
+import Home.Home;
+import java.sql.*;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author daniel
  */
 public class QuizPanel extends javax.swing.JPanel {
+    
+    
+    final private String username = "root";
+    final private String password = "";
+    final private String database_name = "quiz";
+    final private String table_name = "assignquiz";
+    
+    
+    Connection conn;
+    PreparedStatement pst;
+    ResultSet rs;
+    ResultSet rs2;
+    ResultSet rs3;
+    ResultSetMetaData metaData;
+    ResultSetMetaData metaData2;
+    ResultSetMetaData metaData3;
+
 
     /**
      * Creates new form QuizPanel
      */
     public QuizPanel() {
+        
         initComponents();
+        tableRecords();
+    }
+    
+    
+    private void tableRecords(){
+        int count;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/"+database_name, username,password);
+            pst = conn.prepareStatement("select * from "+table_name+ " where assignedto = ?");
+            pst.setString(1,Home.BATCH);
+            rs = pst.executeQuery();
+            metaData = rs.getMetaData();
+            
+            count = metaData.getColumnCount();
+            
+            DefaultTableModel dtm = (DefaultTableModel) quiztable.getModel();
+            dtm.setRowCount(0);
+            
+            while(rs.next()){
+                
+                pst = conn.prepareStatement("select duration from "+"managequiz"+ " where name = ?");
+                pst.setString(1, rs.getString("quizname"));
+                rs2 = pst.executeQuery();
+                int duration = 0;
+                
+                while(rs2.next()){
+                    duration = rs2.getInt("duration");
+                }
+                
+                
+                pst = conn.prepareStatement("select * from "+table_name+ " where quizname = ?");
+                pst.setString(1,rs.getString("quizname"));
+                rs3 = pst.executeQuery();
+                metaData3 = rs3.getMetaData();
+                
+                int c = 0;
+                
+                while(rs3.next()){
+                    ++c;
+                }
+                
+                
+                Vector v = new Vector();
+                for(int i = 0; i <= count; i++){
+                    v.add(rs.getString("quizname"));
+                    v.add(c);
+                    v.add(duration);
+                }
+                dtm.addRow(v);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ManageBatch.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ManageBatch.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -41,7 +123,7 @@ public class QuizPanel extends javax.swing.JPanel {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -99,7 +181,7 @@ public class QuizPanel extends javax.swing.JPanel {
             UserHome uh = new UserHome();
             qc.setVisible(true);
             uh.dispose();
-            
+            String s = Home.BATCH;
     }//GEN-LAST:event_jButton1MouseClicked
 
 

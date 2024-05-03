@@ -56,7 +56,7 @@ public class DashboardComponent extends javax.swing.JPanel {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://localhost/quiz", "root","");
-            pst = conn.prepareStatement("select * from users");
+            pst = conn.prepareStatement("select * from user");
             ResultSet rs;
             rs = pst.executeQuery();
             while(rs.next())count++;

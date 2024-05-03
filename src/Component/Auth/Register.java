@@ -18,7 +18,7 @@ public class Register extends javax.swing.JPanel {
      final private String database_name = "quiz";
      final private String table_name = "user";
        Connection con;
-       PreparedStatement pst;
+       PreparedStatement pst , profile;
     /**
      * Creates new form Register
      */

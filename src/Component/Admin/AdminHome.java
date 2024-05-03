@@ -1,6 +1,7 @@
 package Component.Admin;
 
 import Home.Home;
+import java.awt.LayoutManager;
 import java.sql.*;
 
 /*
@@ -17,9 +18,9 @@ public class AdminHome extends javax.swing.JFrame {
      ManageBatch mb = new ManageBatch();
      ManageQuestions mq = new ManageQuestions();
      ManageQuiz mquiz = new ManageQuiz();
-     Ranking rk = new Ranking();
      AssignQuiz aq = new AssignQuiz();
      ManageStudents mstud = new ManageStudents();
+     Ranking rk = new Ranking();
      
     /**
      * Creates new form Register
@@ -28,7 +29,9 @@ public class AdminHome extends javax.swing.JFrame {
         initComponents();
         
                 greeter.setText("Welcome Home " + Home.USER + "...!");
-        
+                dash.setVisible(true);
+                mb.setVisible(true);
+                
     }
 
     /**
@@ -262,27 +265,12 @@ public class AdminHome extends javax.swing.JFrame {
         mainpanel.add(jPanel3, java.awt.BorderLayout.LINE_START);
 
         changeable.setBackground(new java.awt.Color(255, 255, 255));
+        changeable.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         greeter.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 18)); // NOI18N
         greeter.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         greeter.setText("Welcome Home ... !");
-
-        javax.swing.GroupLayout changeableLayout = new javax.swing.GroupLayout(changeable);
-        changeable.setLayout(changeableLayout);
-        changeableLayout.setHorizontalGroup(
-            changeableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(changeableLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(greeter, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        changeableLayout.setVerticalGroup(
-            changeableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(changeableLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(greeter, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(606, Short.MAX_VALUE))
-        );
+        changeable.add(greeter, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 542, 49));
 
         mainpanel.add(changeable, java.awt.BorderLayout.CENTER);
 
@@ -307,64 +295,49 @@ public class AdminHome extends javax.swing.JFrame {
     }//GEN-LAST:event_dashbtnActionPerformed
 
     private void dashbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashbtnMouseClicked
-        mainpanel.remove(changeable);
-        
-        mainpanel.remove(dash);
-         mainpanel.remove(mquiz);
-         mainpanel.remove(mb);
-         mainpanel.remove(aq);
-         mainpanel.remove(mq);
-         mainpanel.remove(rk);
-         mainpanel.remove(mstud);
-         mb.setVisible(false);
-         mq.setVisible(false);
+        try{
+        dash.setVisible(true);
+                 
+        mainpanel.add(dash);
+          changeable.setVisible(false);
+        mb.setVisible(false);
+        mq.setVisible(false);
          mquiz.setVisible(false);
          rk.setVisible(false);
          aq.setVisible(false);
-         mstud.setVisible(false);
-         dash.setVisible(true);
-         mainpanel.add(dash);
+         mstud.setVisible(false);  
+         }catch(Exception e){System.out.println(e);}
     }//GEN-LAST:event_dashbtnMouseClicked
 
     private void quizbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_quizbtnMouseClicked
-        
-        mainpanel.remove(changeable);
-        mainpanel.remove(dash);
-         mainpanel.remove(mquiz);
-         mainpanel.remove(mb);
-         mainpanel.remove(aq);
-         mainpanel.remove(mq);
-         mainpanel.remove(rk);
-         mainpanel.remove(mstud);
+        try{
+             mq.setVisible(true);
+                 
+        mainpanel.add(mq);
+          changeable.setVisible(false);
         dash.setVisible(false);
-        mq.setVisible(false);
         mb.setVisible(false);
+         mquiz.setVisible(false);
          rk.setVisible(false);
          aq.setVisible(false);
-            mquiz.setVisible(true);
-           mstud.setVisible(false);      
-        mainpanel.add(mquiz);
+         mstud.setVisible(false);  
+        }catch(Exception e){System.out.println(e);}
             
     }//GEN-LAST:event_quizbtnMouseClicked
 
     private void batchbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_batchbtnMouseClicked
-        mainpanel.remove(changeable);
-        mainpanel.remove(dash);
-         mainpanel.remove(mquiz);
-         mainpanel.remove(mb);
-         mainpanel.remove(aq);
-         mainpanel.remove(mq);
-         mainpanel.remove(rk);
-         mainpanel.remove(mstud);
+           try{ 
+        mb.setVisible(true);
+                 
+        mainpanel.add(mb);
+          changeable.setVisible(false);
         dash.setVisible(false);
         mq.setVisible(false);
          mquiz.setVisible(false);
          rk.setVisible(false);
          aq.setVisible(false);
-         mstud.setVisible(false);   
-            mb.setVisible(true);
-                 
-        mainpanel.add(mb);
+         mstud.setVisible(false);  
+           }catch(Exception e){System.out.println(e);}
     }//GEN-LAST:event_batchbtnMouseClicked
 
     private void batchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_batchbtnActionPerformed
@@ -372,23 +345,18 @@ public class AdminHome extends javax.swing.JFrame {
     }//GEN-LAST:event_batchbtnActionPerformed
 
     private void questbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_questbtnMouseClicked
-        mainpanel.remove(changeable);
-        mainpanel.remove(dash);
-         mainpanel.remove(mquiz);
-         mainpanel.remove(mb);
-         mainpanel.remove(aq);
-         mainpanel.remove(mq);
-         mainpanel.remove(rk);
-         mainpanel.remove(mstud);
+        try{
+        mq.setVisible(true);
+                 
+        mainpanel.add(mq);
+          changeable.setVisible(false);
         dash.setVisible(false);
          mquiz.setVisible(false);
          rk.setVisible(false);
             mb.setVisible(false);
          aq.setVisible(false);
          mstud.setVisible(false);   
-        mq.setVisible(true);
-                 
-        mainpanel.add(mq);
+        }catch(Exception e){System.out.println(e);}
     }//GEN-LAST:event_questbtnMouseClicked
 
     private void questbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_questbtnActionPerformed
@@ -396,23 +364,19 @@ public class AdminHome extends javax.swing.JFrame {
     }//GEN-LAST:event_questbtnActionPerformed
 
     private void assignbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_assignbtnMouseClicked
-         mainpanel.remove(changeable);
-         mainpanel.remove(dash);
-         mainpanel.remove(mquiz);
-         mainpanel.remove(mb);
-         mainpanel.remove(aq);
-         mainpanel.remove(mq);
-         mainpanel.remove(rk);
-         mainpanel.remove(mstud);
+        try{ 
+        aq.setVisible(true);
+                 
+        mainpanel.add(aq);
+        
+          changeable.setVisible(false);
         dash.setVisible(false);
          mquiz.setVisible(false);
          rk.setVisible(false);
             mb.setVisible(false);
          mstud.setVisible(false);   
         mq.setVisible(false);
-         aq.setVisible(true);
-                 
-        mainpanel.add(aq);
+        }catch(Exception e){System.out.println(e);}
     }//GEN-LAST:event_assignbtnMouseClicked
 
     private void assignbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assignbtnActionPerformed
@@ -420,21 +384,18 @@ public class AdminHome extends javax.swing.JFrame {
     }//GEN-LAST:event_assignbtnActionPerformed
 
     private void studentsbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_studentsbtnMouseClicked
-        mainpanel.remove(changeable);
-        mainpanel.remove(dash);
-         mainpanel.remove(mquiz);
-         mainpanel.remove(mb);
-         mainpanel.remove(aq);
-         mainpanel.remove(mq);
-         mainpanel.remove(rk);
-        dash.setVisible(false);
-         mquiz.setVisible(false);
-         rk.setVisible(false);
-            mb.setVisible(false);
-         aq.setVisible(false);
-        mq.setVisible(false);
-                 mstud.setVisible(true);   
+        try{    
+        mstud.setVisible(true);
         mainpanel.add(mstud);
+         changeable.setVisible(false);
+        dash.setVisible(false);
+        mquiz.setVisible(false);
+        rk.setVisible(false);
+        mb.setVisible(false);
+        aq.setVisible(false);
+        mq.setVisible(false);
+        }
+        catch(Exception e){System.out.println(e);}
     }//GEN-LAST:event_studentsbtnMouseClicked
 
     private void studentsbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentsbtnActionPerformed
@@ -442,24 +403,26 @@ public class AdminHome extends javax.swing.JFrame {
     }//GEN-LAST:event_studentsbtnActionPerformed
 
     private void rankingbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rankingbtnMouseClicked
-        
-         mainpanel.remove(changeable);
-         mainpanel.remove(dash);
-         mainpanel.remove(mquiz);
-         mainpanel.remove(mb);
-         mainpanel.remove(aq);
-         mainpanel.remove(mq);
-         mainpanel.remove(mstud);
-         mainpanel.remove(rk);
-         
-         dash.setVisible(false);
-         mquiz.setVisible(false);
-         mb.setVisible(false);
-         aq.setVisible(false);
-         mq.setVisible(false);
-         mstud.setVisible(false);   
+       try{
+         if(changeable.isVisible())
+            changeable.setVisible(false);
+         if( dash.isVisible())
+            dash.setVisible(false);
+         if( mquiz.isVisible())
+            mquiz.setVisible(false);
+         if( mb.isVisible())
+            mb.setVisible(false);
+         if( aq.isVisible())
+            aq.setVisible(false);
+         if( mq.isVisible())
+            mq.setVisible(false);
+         if( mstud.isVisible())
+            mstud.setVisible(false);   
+         if( rk.isVisible())
+            rk.setVisible(false);
          rk.setVisible(true);
          mainpanel.add(rk);
+       }catch(Exception e){System.out.println(e);}
     }//GEN-LAST:event_rankingbtnMouseClicked
 
     private void rankingbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rankingbtnActionPerformed

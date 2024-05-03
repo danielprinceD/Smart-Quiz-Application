@@ -16,7 +16,7 @@ public class Login extends javax.swing.JPanel {
      final private String username = "root";
      final private String password = "";
      final private String database_name = "quiz";
-     final private String table_name = "users";
+     final private String table_name = "user";
      Connection con;
      PreparedStatement pst;
     /**
@@ -160,7 +160,7 @@ public class Login extends javax.swing.JPanel {
             String pass  = passvar.getText().toString().trim();
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/"+database_name , username , password);
-            pst = con.prepareStatement("select id,password , name from " + table_name + " where email = ?");
+            pst = con.prepareStatement("select id,password,name,dept from " + table_name + " where email = ?");
             pst.setString(1 , email);
             ResultSet res = pst.executeQuery();
             
@@ -182,6 +182,7 @@ public class Login extends javax.swing.JPanel {
                 {
                 Home.USER = res.getString("name");
                 Home.ID = res.getInt("id");
+                Home.BATCH = res.getString("dept");
                 
                 JOptionPane.showMessageDialog(this , "Welcome Home " + res.getString("name") );
                 

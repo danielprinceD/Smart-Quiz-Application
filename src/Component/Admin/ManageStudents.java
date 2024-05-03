@@ -24,7 +24,7 @@ public class ManageStudents extends javax.swing.JPanel {
     final private String username = "root";
      final private String password = "";
      final private String database_name = "quiz";
-     final private String table_name = "users";
+     final private String table_name = "user";
     /**
      * Creates new form ManageStudents
      */

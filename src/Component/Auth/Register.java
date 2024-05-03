@@ -419,6 +419,7 @@ public class Register extends javax.swing.JPanel {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/"+database_name , username , password);
             pst = con.prepareStatement("insert into "+table_name+"(name ,email , password , dept , gender, question , answer , Mobile) values(? , ? , ? , ? , ? , ? , ? , ? )");
+            
             pst.setString(1 , name.trim());
             pst.setString(2 , email.trim());
             pst.setString(3 , pass.trim());

@@ -10,6 +10,7 @@ import Home.Home;
  */
 public class UserHome extends javax.swing.JFrame {
     Profile p = new Profile();
+    QuizPanel qp = new QuizPanel();
     /**
      * Creates new form UserHome
      */
@@ -191,7 +192,7 @@ public class UserHome extends javax.swing.JFrame {
     private void profilebtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profilebtnMouseClicked
         try{
             changeable.setVisible(false);
-            
+            qp.setVisible(false);
             p.setVisible(true);
             this.add(p);
             
@@ -207,7 +208,17 @@ public class UserHome extends javax.swing.JFrame {
     }//GEN-LAST:event_profilebtnActionPerformed
 
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
-    
+            try{
+            changeable.setVisible(false);
+            p.setVisible(false);
+            
+            qp.setVisible(true);
+            this.add(qp);
+            
+        }catch(Exception ex)
+        {
+            System.out.println(ex);
+        }
     }//GEN-LAST:event_homeMouseClicked
 
     private void homeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeActionPerformed

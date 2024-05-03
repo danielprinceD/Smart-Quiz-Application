@@ -317,7 +317,7 @@ public class AdminHome extends javax.swing.JFrame {
           changeable.setVisible(false);
         dash.setVisible(false);
         mb.setVisible(false);
-         mquiz.setVisible(false);
+         mq.setVisible(false);
          rk.setVisible(false);
          aq.setVisible(false);
          mstud.setVisible(false);  

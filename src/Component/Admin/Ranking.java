@@ -35,13 +35,10 @@ public class Ranking extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Id", "Name", "Batch", "points"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -51,12 +48,12 @@ public class Ranking extends javax.swing.JPanel {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 760;
-        gridBagConstraints.ipady = 591;
+        gridBagConstraints.ipadx = 967;
+        gridBagConstraints.ipady = 685;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(18, 133, 35, 0);
+        gridBagConstraints.insets = new java.awt.Insets(18, 133, 57, 68);
         add(jScrollPane1, gridBagConstraints);
 
         jLabel1.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 24)); // NOI18N

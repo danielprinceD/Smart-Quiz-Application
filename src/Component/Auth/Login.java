@@ -156,27 +156,34 @@ public class Login extends javax.swing.JPanel {
        
         try{
             String email = emailvar.getText().toString().trim();
-            String password  = passvar.getText().toString().trim();
+            String pass  = passvar.getText().toString().trim();
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/"+database_name , username , password);
             pst = con.prepareStatement("select id,password , name from " + table_name + " where email = ?");
             pst.setString(1 , email);
             ResultSet res = pst.executeQuery();
             
+            if(email.equals("admin@gmail.com") && pass.equals("admin")){
+                JOptionPane.showMessageDialog(this , "Welcome Home " + "Admin" );
+                Home.USER = "Admin";
+                Home.ID = 0;
+                AdminHome admin = new AdminHome();
+                Home hm = new Home();
+                hm.dispose();
+                admin.setVisible(true);
+            }else{
+            
                 if(res.next())
                 {
                 String retrieved = res.getString("password");
                 
-                if(retrieved.equals(password))
+                if(retrieved.equals(pass))
                 {
                 Home.USER = res.getString("name");
                 Home.ID = res.getInt("id");
                 
                 JOptionPane.showMessageDialog(this , "Welcome Home " + res.getString("name") );
-                AdminHome admin = new AdminHome();
-                Home hm = new Home();
-                hm.setVisible(false);
-                admin.setVisible(true);
+                
                 }else {
                     
             JOptionPane.showMessageDialog(this , "Enter Valid Credential" , "Credential Incorrect" , 2 );
@@ -188,6 +195,7 @@ public class Login extends javax.swing.JPanel {
             {
             JOptionPane.showMessageDialog(this , "Enter Valid Credential" , "Credential Incorrect" , 2 );
                 
+            }
             }
 //            if(password.equals())
             

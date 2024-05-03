@@ -144,7 +144,7 @@ public class AdminHome extends javax.swing.JFrame {
 
         batchbtn.setBackground(new java.awt.Color(255, 255, 153));
         batchbtn.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
-        batchbtn.setText("manage Batch");
+        batchbtn.setText("Manage Batch");
         batchbtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 batchbtnMouseClicked(evt);
@@ -311,9 +311,9 @@ public class AdminHome extends javax.swing.JFrame {
 
     private void quizbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_quizbtnMouseClicked
         try{
-             mq.setVisible(true);
+             mquiz.setVisible(true);
                  
-        mainpanel.add(mq);
+        mainpanel.add(mquiz);
           changeable.setVisible(false);
         dash.setVisible(false);
         mb.setVisible(false);

@@ -4,20 +4,75 @@
  */
 package Component.User;
 
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
+import javax.swing.Timer;
+import java.sql.*;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author daniel
  */
 public class QuizConsole extends javax.swing.JFrame {
+    static int ID = 0;
+    static int next = 0;
+    static int correct = 0 , wrong = 0 , total = 0 , answered = 0;
+    Connection conn;
+    ResultSet rs;
+    PreparedStatement pst;
     
     /**
      * Creates new form QuizConsole
      */
+    
     public QuizConsole() {
-        initComponents();
+        initComponents(); 
+    try {        
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        conn = DriverManager.getConnection("jdbc:mysql://localhost/quiz","root","");
+         pst = conn.prepareStatement("select question , choice1 , choice2 , choice3 , choice4 , answer from question where quizid = ? ");
+         pst.setInt(1, ID);
+         rs = pst.executeQuery();
+        }   
+        catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(this , ex.getMessage() , "Exception" , 2 );
+        } 
+        showTest();
+    }
+    final void showTest()
+    {
+            
+            
+        try{
+            
+            if(rs.next()){
+                quest.setText(rs.getString("question"));
+                one.setText(rs.getString("choice1"));
+                two.setText(rs.getString("choice2"));
+                three.setText(rs.getString("choice3"));
+                four.setText(rs.getString("choice4"));
+                
+                
+            }
+            else 
+            {
+                
+                jPanel2.setVisible(false);
+                Result r = new Result();
+                r.setVisible(true);
+                this.add(r);
+                
+            }
+        }catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(this , ex.getMessage() , "Exception" , 2 );
+        } 
+        
         
     }
 
@@ -30,10 +85,21 @@ public class QuizConsole extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        minvar = new javax.swing.JLabel();
+        secvar = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        quest = new javax.swing.JLabel();
+        one = new javax.swing.JRadioButton();
+        two = new javax.swing.JRadioButton();
+        three = new javax.swing.JRadioButton();
+        four = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -62,21 +128,121 @@ public class QuizConsole extends javax.swing.JFrame {
             }
         });
 
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+
+        minvar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        minvar.setText("0");
+
+        secvar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        secvar.setText("0");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(minvar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(secvar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 8, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(minvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(secvar, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
+        );
+
+        jButton2.setBackground(new java.awt.Color(102, 102, 255));
+        jButton2.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 18)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("Next");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        quest.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12)); // NOI18N
+        quest.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        quest.setText("jLabel2");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(quest, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(quest, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        buttonGroup1.add(one);
+        one.setText("jRadioButton1");
+
+        buttonGroup1.add(two);
+        two.setText("jRadioButton2");
+
+        buttonGroup1.add(three);
+        three.setText("jRadioButton3");
+
+        buttonGroup1.add(four);
+        four.setText("jRadioButton4");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(722, Short.MAX_VALUE)
-                .addComponent(jButton1)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(722, 722, 722)
+                        .addComponent(jButton1))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(675, 675, 675)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(114, 114, 114)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(202, 202, 202)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(one)
+                            .addComponent(three))
+                        .addGap(137, 137, 137)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(four)
+                            .addComponent(two))))
                 .addGap(15, 15, 15))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(489, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(one)
+                    .addComponent(two))
+                .addGap(55, 55, 55)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(three)
+                    .addComponent(four))
+                .addGap(169, 169, 169)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
@@ -86,6 +252,7 @@ public class QuizConsole extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        
         int Choice = JOptionPane.showConfirmDialog(this , "Do you want to end quiz ? " , "WARNING" , JOptionPane.YES_NO_OPTION);
         if(Choice == 0)
         {
@@ -93,50 +260,93 @@ public class QuizConsole extends javax.swing.JFrame {
             uh.setVisible(true);
             this.dispose();
         }
-        
+
     }//GEN-LAST:event_jButton1MouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try{ 
+       String selected = one.isSelected() ? rs.getString("choice1") : two.isSelected() ? rs.getString("choice2") : three.isSelected() ? rs.getString("choice3") :four.isSelected() ? rs.getString("choice4") : "";
+        
+            if(rs.getString("answer").equals(selected)){
+                correct++;
+            }
+            else{
+                wrong++;
+            }
+            answered++;
+        }
+       catch(Exception ex) { }
+        showTest();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        
+        
+        
+    }//GEN-LAST:event_jButton2MouseClicked
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(QuizConsole.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(QuizConsole.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(QuizConsole.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(QuizConsole.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+       
+        
+            try{
+      ActionListener ticktock = new ActionListener() {
+      public void actionPerformed(ActionEvent evnt) {
+        System.out.println("Swing timer started"); // The display of this message is essentially
+        //an activity that is linked to the swing timer till it stops.
+    }
+  };
+    Timer timer = new Timer(300 ,ticktock); //timer is ticking
+    timer.setRepeats(false); //By doing so, we are requesting that the timer be turned off once.
+    timer.start();
+     java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new QuizConsole().setVisible(true);
                 
             }
         });
+     
+    Thread.sleep(10000);
+   new Profile();
+    QuizConsole n = new QuizConsole();
+   UserHome uh = new UserHome();
+   uh.setVisible(true);
+ 
+   n.dispose();
+   
+   
+   System.out.println("Timeout"); //timer ends and this message is displayed
+    } catch (InterruptedException expn) {
+    }
+        
+    
+        
+       
+        
+        
+        
+        
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JRadioButton four;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JLabel minvar;
+    private javax.swing.JRadioButton one;
+    private javax.swing.JLabel quest;
+    private javax.swing.JLabel secvar;
+    private javax.swing.JRadioButton three;
+    private javax.swing.JRadioButton two;
     // End of variables declaration//GEN-END:variables
 
 }

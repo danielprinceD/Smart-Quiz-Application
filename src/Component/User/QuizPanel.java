@@ -10,6 +10,7 @@ import java.sql.*;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -33,7 +34,7 @@ public class QuizPanel extends javax.swing.JPanel {
     ResultSetMetaData metaData;
     ResultSetMetaData metaData2;
     ResultSetMetaData metaData3;
-
+DefaultTableModel dtm;
 
     /**
      * Creates new form QuizPanel
@@ -57,7 +58,7 @@ public class QuizPanel extends javax.swing.JPanel {
             
             count = metaData.getColumnCount();
             
-            DefaultTableModel dtm = (DefaultTableModel) quiztable.getModel();
+            dtm = (DefaultTableModel) quiztable.getModel();
             dtm.setRowCount(0);
             
             while(rs.next()){
@@ -130,6 +131,11 @@ public class QuizPanel extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
+        quiztable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                quiztableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(quiztable);
 
         jButton1.setBackground(new java.awt.Color(51, 255, 0));
@@ -177,12 +183,26 @@ public class QuizPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-            QuizConsole qc = new QuizConsole();
+            
+        if(QuizConsole.ID != 0)
+        {
+            QuizConsole qp = new QuizConsole();
             UserHome uh = new UserHome();
-            qc.setVisible(true);
+            qp.setVisible(true);
             uh.dispose();
-            String s = Home.BATCH;
+        }
+        else 
+        {
+            JOptionPane.showMessageDialog(this , "Select Any Quiz " , "Exception" , 2 );
+        }
+            
     }//GEN-LAST:event_jButton1MouseClicked
+
+    private void quiztableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_quiztableMouseClicked
+       
+        try { QuizConsole.ID =(int) dtm.getValueAt(quiztable.getSelectedRow(), 1); }
+       catch(Exception e) {JOptionPane.showMessageDialog(this , e.getMessage() , "Exception" , 2 );}
+    }//GEN-LAST:event_quiztableMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

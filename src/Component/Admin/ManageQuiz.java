@@ -4,17 +4,36 @@
  */
 package Component.Admin;
 
+import java.sql.*;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author daniel
  */
 public class ManageQuiz extends javax.swing.JPanel {
+    
+    
+    final private String username = "root";
+    final private String password = "";
+    final private String database_name = "quiz";
+    final private String table_name = "managequiz";
+    
+    Connection conn;
+    PreparedStatement pst;
+    ResultSet rs;
+    ResultSetMetaData metaData;
 
     /**
      * Creates new form ManageQuiz
      */
     public ManageQuiz() {
         initComponents();
+        tableRecords();
     }
 
     /**
@@ -28,30 +47,34 @@ public class ManageQuiz extends javax.swing.JPanel {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
+        tableQuiz = new javax.swing.JTable();
+        textQName = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        textQQuestionCount = new javax.swing.JTextField();
+        textQDuration = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new java.awt.GridBagLayout());
 
-        jTable1.setBackground(new java.awt.Color(255, 255, 204));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableQuiz.setBackground(new java.awt.Color(255, 255, 204));
+        tableQuiz.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id", "Quiz Name", "Question"
+                "Id", "Quiz Name", "Question", "Duration"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -62,15 +85,20 @@ public class ManageQuiz extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        tableQuiz.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableQuizMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tableQuiz);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 6;
+        gridBagConstraints.gridheight = 9;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 612;
-        gridBagConstraints.ipady = 584;
+        gridBagConstraints.ipadx = 601;
+        gridBagConstraints.ipady = 548;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -79,12 +107,12 @@ public class ManageQuiz extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.ipadx = 201;
         gridBagConstraints.ipady = 17;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(12, 30, 0, 75);
-        add(jTextField1, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(12, 29, 0, 76);
+        add(textQName, gridBagConstraints);
 
         jLabel1.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -92,86 +120,248 @@ public class ManageQuiz extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.ipadx = 184;
         gridBagConstraints.ipady = 28;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(136, 30, 0, 75);
+        gridBagConstraints.insets = new java.awt.Insets(28, 29, 0, 0);
         add(jLabel1, gridBagConstraints);
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 204));
-        jButton1.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12)); // NOI18N
-        jButton1.setText("Add");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAdd.setBackground(new java.awt.Color(255, 255, 204));
+        btnAdd.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12)); // NOI18N
+        btnAdd.setText("Add");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAddActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.ipadx = 38;
         gridBagConstraints.ipady = 14;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(34, 102, 0, 0);
-        add(jButton1, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(68, 117, 0, 0);
+        add(btnAdd, gridBagConstraints);
 
-        jButton2.setBackground(new java.awt.Color(255, 51, 51));
-        jButton2.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Delete");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnDelete.setBackground(new java.awt.Color(255, 51, 51));
+        btnDelete.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12)); // NOI18N
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnDeleteActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 8;
         gridBagConstraints.ipadx = 33;
         gridBagConstraints.ipady = 14;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(34, 102, 0, 0);
-        add(jButton2, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(34, 117, 42, 0);
+        add(btnDelete, gridBagConstraints);
 
-        jButton3.setBackground(new java.awt.Color(255, 255, 204));
-        jButton3.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12)); // NOI18N
-        jButton3.setText("Edit");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnEdit.setBackground(new java.awt.Color(255, 255, 204));
+        btnEdit.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12)); // NOI18N
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnEditActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.ipadx = 38;
         gridBagConstraints.ipady = 14;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(34, 102, 0, 0);
-        add(jButton3, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(34, 117, 0, 0);
+        add(btnEdit, gridBagConstraints);
+
+        jLabel2.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Questions Count");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.ipadx = 144;
+        gridBagConstraints.ipady = 28;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(18, 29, 0, 0);
+        add(jLabel2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.ipadx = 201;
+        gridBagConstraints.ipady = 17;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(12, 29, 0, 76);
+        add(textQQuestionCount, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.ipadx = 201;
+        gridBagConstraints.ipady = 17;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(12, 29, 0, 76);
+        add(textQDuration, gridBagConstraints);
+
+        jLabel3.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Time Duration (Minutes)");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.ipadx = 93;
+        gridBagConstraints.ipady = 28;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(18, 29, 0, 0);
+        add(jLabel3, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    
+    private void tableRecords(){
+        int count;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/"+database_name, username,password);
+            pst = conn.prepareStatement("select * from "+table_name);
+            
+            rs = pst.executeQuery();
+            metaData = rs.getMetaData();
+            
+            count = metaData.getColumnCount();
+            
+            DefaultTableModel dtm = (DefaultTableModel) tableQuiz.getModel();
+            dtm.setRowCount(0);
+            
+            while(rs.next()){
+                Vector v = new Vector();
+                for(int i = 0; i <= count; i++){
+                    v.add(rs.getString("id"));
+                    v.add(rs.getString("name"));
+                    v.add(rs.getString("questions"));
+                    v.add(rs.getString("duration"));
+                }
+                dtm.addRow(v);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ManageQuiz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ManageQuiz.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        String qName = textQName.getText();
+        int qQuestions = Integer.parseInt(textQQuestionCount.getText());
+        int qDuration = Integer.parseInt(textQDuration.getText());
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/"+database_name, username,password);
+            pst = conn.prepareStatement("insert into "+ table_name +"(name,questions,duration) values(?,?,?)");
+            pst.setString(1, qName);
+            pst.setInt(2, qQuestions);
+            pst.setInt(3, qDuration);
+            pst.executeUpdate();
+            
+            textQName.setText("");
+            textQQuestionCount.setText("");
+            textQDuration.setText("");
+            textQName.requestFocus();
+            tableRecords();
+            JOptionPane.showMessageDialog(this, "Record Added Successfully...." );
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ManageQuiz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ManageQuiz.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAddActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        DefaultTableModel dtm  = (DefaultTableModel) tableQuiz.getModel();
+        int index = tableQuiz.getSelectedRow();
+        
+        try {
+            int id = Integer.parseInt(dtm.getValueAt(index, 0).toString());
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/"+database_name, username,password);
+            pst = conn.prepareStatement("delete from "+table_name+" where id =? ");
+            pst.setInt(1, id);
+            pst.executeUpdate();
+            
+            textQName.setText("");
+            textQQuestionCount.setText("");
+            textQDuration.setText("");
+            textQName.requestFocus();
+            tableRecords();
+            JOptionPane.showMessageDialog(this, "Record Deleted Successfully...." );
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ManageQuiz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ManageQuiz.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        DefaultTableModel dtm  = (DefaultTableModel) tableQuiz.getModel();
+        int index = tableQuiz.getSelectedRow();
+        String qName = textQName.getText();
+        int qQuestions = Integer.parseInt(textQQuestionCount.getText());
+        int qDuration = Integer.parseInt(textQDuration.getText());
+        
+        try {
+            int id = Integer.parseInt(dtm.getValueAt(index, 0).toString());
+            
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/"+database_name, username,password);
+            pst = conn.prepareStatement("update "+ table_name +" set name = ?,questions = ?,duration = ? where id =? ");
+            pst.setString(1, qName);
+            pst.setInt(2, qQuestions);
+            pst.setInt(3, qDuration);
+            pst.setInt(4, id);
+            pst.executeUpdate();
+            
+            textQName.setText("");
+            textQDuration.setText("");
+            textQQuestionCount.setText("");
+            textQName.requestFocus();
+            tableRecords();
+            JOptionPane.showMessageDialog(this, "Record Updated Successfully...." );
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ManageQuiz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ManageQuiz.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void tableQuizMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableQuizMouseClicked
+        DefaultTableModel dtm = (DefaultTableModel) tableQuiz.getModel();
+        int index = tableQuiz.getSelectedRow();
+        textQName.setText(dtm.getValueAt(index, 1).toString());
+        textQQuestionCount.setText(dtm.getValueAt(index, 2).toString());
+        textQDuration.setText(dtm.getValueAt(index, 3).toString());
+    }//GEN-LAST:event_tableQuizMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEdit;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tableQuiz;
+    private javax.swing.JTextField textQDuration;
+    private javax.swing.JTextField textQName;
+    private javax.swing.JTextField textQQuestionCount;
     // End of variables declaration//GEN-END:variables
 }

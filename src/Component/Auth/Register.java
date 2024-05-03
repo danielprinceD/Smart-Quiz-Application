@@ -418,21 +418,17 @@ public class Register extends javax.swing.JPanel {
             
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/"+database_name , username , password);
-            pst = con.prepareStatement("insert into "+table_name+"(name ,email , password , dept , gender, question , answer , Mobile) values(? , ? , ? , ? , ? , ? , ? , ? )");
-            profile = con.prepareStatement("insert into profile(name , email , branch ) values( ? , ? , ?  )");
-            profile.setString(1 , name.trim());
-            profile.setString(2 , email.trim());
-            profile.setString(3 , dept.trim());
+            pst = con.prepareStatement("insert into "+table_name+"(name ,email , password , dept , gender, question , rollno, answer , Mobile) values(? , ? , ? , ? , ? , ? , ? , ? , ? )");
             pst.setString(1 , name.trim());
             pst.setString(2 , email.trim());
             pst.setString(3 , pass.trim());
             pst.setString(4 , dept.trim());
             pst.setString(5 , gender.trim());
             pst.setString(6 , quest);
-            pst.setString(7 , answer.trim());
-            pst.setString(8, mobile.trim());
+            pst.setString(7 , roll);
+            pst.setString(8 , answer.trim());
+            pst.setString(9, mobile.trim());
             pst.executeUpdate();
-            profile.executeUpdate();
             JOptionPane.showMessageDialog(this , "You have Registered Successfully..! " + name);
             
             namevar.setText(""); deptvar.setSelectedIndex(0);

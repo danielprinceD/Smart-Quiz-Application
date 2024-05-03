@@ -3,6 +3,10 @@ package Component.Admin;
 import javax.swing.JOptionPane;
 
 import java.sql.*;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
@@ -13,8 +17,10 @@ import java.sql.*;
  * @author daniel
  */
 public class ManageStudents extends javax.swing.JPanel {
-    Connection con;
+    Connection conn;
     PreparedStatement pst;
+    ResultSet rs;
+    ResultSetMetaData metaData;
     final private String username = "root";
      final private String password = "";
      final private String database_name = "quiz";
@@ -24,6 +30,7 @@ public class ManageStudents extends javax.swing.JPanel {
      */
     public ManageStudents() {
         initComponents();
+        tableRecords();
     }
 
     /**
@@ -36,7 +43,7 @@ public class ManageStudents extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableStudent = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -47,7 +54,7 @@ public class ManageStudents extends javax.swing.JPanel {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         questvar = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
         mobilevar = new javax.swing.JTextField();
         namevar = new javax.swing.JTextField();
         emailvar = new javax.swing.JTextField();
@@ -59,30 +66,35 @@ public class ManageStudents extends javax.swing.JPanel {
         deptvar = new javax.swing.JComboBox<>();
         passvar = new javax.swing.JPasswordField();
         confirmvar = new javax.swing.JPasswordField();
-        jButton2 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableStudent.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Name", "Roll Number", "Department", "Mobile", "Password", "Gender", "Security Question", "Answer"
+                "ID", "Name", "Roll Number", "Department", "Mobile", "Password", "Gender", "Security Question", "Answer", "email"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
+        tableStudent.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableStudentMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tableStudent);
+        if (tableStudent.getColumnModel().getColumnCount() > 0) {
+            tableStudent.getColumnModel().getColumn(2).setResizable(false);
         }
 
         jLabel2.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12)); // NOI18N
@@ -107,7 +119,7 @@ public class ManageStudents extends javax.swing.JPanel {
         jLabel8.setText("Roll Number");
 
         jLabel9.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12)); // NOI18N
-        jLabel9.setText("Survey Question");
+        jLabel9.setText("Security Question");
 
         jLabel10.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12)); // NOI18N
         jLabel10.setText("Answer");
@@ -119,18 +131,18 @@ public class ManageStudents extends javax.swing.JPanel {
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(0, 255, 0));
-        jButton1.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Add");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnAdd.setBackground(new java.awt.Color(0, 255, 0));
+        btnAdd.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12)); // NOI18N
+        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
+        btnAdd.setText("Add");
+        btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                btnAddMouseClicked(evt);
             }
         });
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAddActionPerformed(evt);
             }
         });
 
@@ -183,33 +195,33 @@ public class ManageStudents extends javax.swing.JPanel {
 
         deptvar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CSE", "ECE", "EEE", "BioMed", "Mech" }));
 
-        jButton2.setBackground(new java.awt.Color(255, 255, 51));
-        jButton2.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Edit");
-        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnEdit.setBackground(new java.awt.Color(255, 255, 0));
+        btnEdit.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12)); // NOI18N
+        btnEdit.setForeground(new java.awt.Color(102, 102, 102));
+        btnEdit.setText("Edit");
+        btnEdit.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton2MouseClicked(evt);
+                btnEditMouseClicked(evt);
             }
         });
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnEditActionPerformed(evt);
             }
         });
 
-        jButton5.setBackground(new java.awt.Color(255, 51, 51));
-        jButton5.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jButton5.setText("Delete");
-        jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnDelete.setBackground(new java.awt.Color(255, 51, 51));
+        btnDelete.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 12)); // NOI18N
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
+        btnDelete.setText("Delete");
+        btnDelete.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton5MouseClicked(evt);
+                btnDeleteMouseClicked(evt);
             }
         });
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btnDeleteActionPerformed(evt);
             }
         });
 
@@ -264,11 +276,11 @@ public class ManageStudents extends javax.swing.JPanel {
                 .addComponent(ansvar, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(240, 240, 240)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(270, 270, 270)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -330,9 +342,9 @@ public class ManageStudents extends javax.swing.JPanel {
                     .addComponent(ansvar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -340,7 +352,48 @@ public class ManageStudents extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_questvarActionPerformed
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    
+    private void tableRecords(){
+        int count;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/"+database_name, username,password);
+            pst = conn.prepareStatement("select * from "+table_name);
+            
+            rs = pst.executeQuery();
+            metaData = rs.getMetaData();
+            
+            count = metaData.getColumnCount();
+            
+            DefaultTableModel dtm = (DefaultTableModel) tableStudent.getModel();
+            dtm.setRowCount(0);
+            
+            while(rs.next()){
+                Vector v = new Vector();
+                for(int i = 0; i <= count; i++){
+                    v.add(rs.getString("id"));
+                    v.add(rs.getString("name"));
+                    v.add(rs.getString("rollno"));
+                    v.add(rs.getString("dept"));
+                    v.add(rs.getString("Mobile"));
+                    v.add(rs.getString("password"));
+                    v.add(rs.getString("gender"));
+                    v.add(rs.getString("question"));
+                    v.add(rs.getString("answer"));
+                    v.add(rs.getString("email"));
+                }
+                dtm.addRow(v);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ManageQuiz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ManageQuiz.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    
+    private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
         String mobile = mobilevar.getText() ,  name = namevar.getText() , roll = rollvar.getText() , curr_pass = confirmvar.getText(), email = emailvar.getText() , pass = passvar.getText() , dept = deptvar.getSelectedItem().toString() , quest = questvar.getSelectedItem().toString() , answer = ansvar.getText();
         if(name.isEmpty() || roll.isBlank() || email.isBlank() || pass.isEmpty() || answer.isBlank())
         {
@@ -365,18 +418,21 @@ public class ManageStudents extends javax.swing.JPanel {
             String gender = (gender1.isSelected()) ? "male" : "female";
 
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/"+database_name , username , password);
-            pst = con.prepareStatement("insert into "+table_name+"(name ,email , password , dept , gender, question , answer , Mobile) values(? , ? , ? , ? , ? , ? , ? , ? )");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/"+database_name , username , password);
+            pst = conn.prepareStatement("insert into "+table_name+"(name ,email , password , dept , gender, question, rollno, answer , Mobile) values(?, ? , ? , ? , ? , ? , ? , ? , ? )");
             pst.setString(1 , name.trim());
             pst.setString(2 , email.trim());
             pst.setString(3 , pass.trim());
             pst.setString(4 , dept.trim());
             pst.setString(5 , gender.trim());
             pst.setString(6 , quest);
-            pst.setString(7 , answer.trim());
-            pst.setString(8, mobile.trim());
+            pst.setString(7 , roll);
+            pst.setString(8 , answer.trim());
+            pst.setString(9, mobile.trim());
             pst.executeUpdate();
-            JOptionPane.showMessageDialog(this , "You have Registered Successfully..! " + name);
+            JOptionPane.showMessageDialog(this , "Student Details Registered Successfully..! ");
+            
+            tableRecords();
 
             namevar.setText(""); deptvar.setSelectedIndex(0);
             passvar.setText(""); gender1.setSelected(false); gender2.setSelected(false);
@@ -387,11 +443,11 @@ public class ManageStudents extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this , ex.getMessage() , "Exception" , 2 );
         }
 
-    }//GEN-LAST:event_jButton1MouseClicked
+    }//GEN-LAST:event_btnAddMouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        
+    }//GEN-LAST:event_btnAddActionPerformed
 
     private void mobilevarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mobilevarActionPerformed
         // TODO add your handling code here:
@@ -423,33 +479,129 @@ public class ManageStudents extends javax.swing.JPanel {
         gender2.setSelected(true);
     }//GEN-LAST:event_gender2ActionPerformed
 
-    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+    private void btnEditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2MouseClicked
+    }//GEN-LAST:event_btnEditMouseClicked
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        DefaultTableModel dtm  = (DefaultTableModel) tableStudent.getModel();
+        int index = tableStudent.getSelectedRow();
+        String mobile = mobilevar.getText() ,  name = namevar.getText() , roll = rollvar.getText() , curr_pass = confirmvar.getText(), email = emailvar.getText() , pass = passvar.getText() , dept = deptvar.getSelectedItem().toString() , quest = questvar.getSelectedItem().toString() , answer = ansvar.getText();
+        String gender = (gender1.isSelected()) ? "male" : "female";
+        if(name.isEmpty() || roll.isBlank() || email.isBlank() || pass.isEmpty() || answer.isBlank())
+        {
+            JOptionPane.showMessageDialog(this, "Please! Check the form whether it is filled" , "Fill the Form Properly" , 2);
+            return;
+        }
+        if(!curr_pass.equals(pass) || pass.isEmpty() || curr_pass.isEmpty() ){
+            JOptionPane.showMessageDialog(this, "Your Password is Mismatch" , "Check Password" , 2);
+            passvar.requestFocus();
+            return;
+        }
+        int i = 0;
+        while(i < mobile.length())
+        {
+            if(!(mobile.charAt(i) >= '0' && mobile.charAt(i) <='9')){
+                JOptionPane.showMessageDialog(this, "Please Enter Valid Mobile Number" , "Enter Valid Mobile Number" , 2); return;
+            }
+            i++;
+        }
+        try{
+            
+            int id = Integer.parseInt(dtm.getValueAt(index, 0).toString());
+            
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/"+database_name , username , password);
+            pst = conn.prepareStatement("update "+table_name+" set name = ?,email = ?, password = ?, dept = ?, gender = ?, question =?, rollno = ?, answer = ?, Mobile = ? where id = ?");
+            pst.setString(1 , name.trim());
+            pst.setString(2 , email.trim());
+            pst.setString(3 , pass.trim());
+            pst.setString(4 , dept.trim());
+            pst.setString(5 , gender.trim());
+            pst.setString(6 , quest);
+            pst.setString(7 , roll);
+            pst.setString(8 , answer.trim());
+            pst.setString(9, mobile.trim());
+            pst.setInt(10, id);
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(this , "Student Details Edited Successfully..! " + name);
+            
+            tableRecords();
 
-    private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5MouseClicked
+            namevar.setText(""); deptvar.setSelectedIndex(0);
+            passvar.setText(""); gender1.setSelected(false); gender2.setSelected(false);
+            emailvar.setText(""); ansvar.setText(""); questvar.setSelectedIndex(0);
+            rollvar.setText(""); mobilevar.setText(""); confirmvar.setText("");
+        }catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(this , ex.getMessage() , "Exception" , 2 );
+        }
+        
+    }//GEN-LAST:event_btnEditActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_btnDeleteMouseClicked
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        DefaultTableModel dtm  = (DefaultTableModel) tableStudent.getModel();
+        int index = tableStudent.getSelectedRow();
+        
+        try {
+            int id = Integer.parseInt(dtm.getValueAt(index, 0).toString());
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/"+database_name, username,password);
+            pst = conn.prepareStatement("delete from "+table_name+" where id =? ");
+            pst.setInt(1, id);
+            pst.executeUpdate();
+            
+            namevar.setText(""); deptvar.setSelectedIndex(0);
+            passvar.setText(""); gender1.setSelected(false); gender2.setSelected(false);
+            emailvar.setText(""); ansvar.setText(""); questvar.setSelectedIndex(0);
+            rollvar.setText(""); mobilevar.setText(""); confirmvar.setText("");
+            tableRecords();
+            JOptionPane.showMessageDialog(this, "Record Deleted Successfully...." );
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ManageQuiz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ManageQuiz.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void tableStudentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableStudentMouseClicked
+        
+        DefaultTableModel dtm = (DefaultTableModel) tableStudent.getModel();
+        int index = tableStudent.getSelectedRow();
+        namevar.setText(dtm.getValueAt(index, 1).toString());
+        rollvar.setText(dtm.getValueAt(index,2).toString());
+        deptvar.setSelectedItem(dtm.getValueAt(index, 3).toString());
+        mobilevar.setText(dtm.getValueAt(index, 4).toString());
+        passvar.setText(dtm.getValueAt(index, 5).toString());
+        confirmvar.setText(dtm.getValueAt(index, 5).toString());
+        if(dtm.getValueAt(index, 6).toString().equals("male")){
+            gender1.setSelected(true);
+            gender2.setSelected(false);
+        }else{
+            gender1.setSelected(false);
+            gender2.setSelected(true);
+        }
+        questvar.setSelectedItem(dtm.getValueAt(index, 7).toString());
+        ansvar.setText(dtm.getValueAt(index, 8).toString());
+        emailvar.setText(dtm.getValueAt(index, 9).toString());
+
+    }//GEN-LAST:event_tableStudentMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField ansvar;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEdit;
     private javax.swing.JPasswordField confirmvar;
     private javax.swing.JComboBox<String> deptvar;
     private javax.swing.JTextField emailvar;
     private javax.swing.JRadioButton gender1;
     private javax.swing.JRadioButton gender2;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
@@ -461,11 +613,11 @@ public class ManageStudents extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField mobilevar;
     private javax.swing.JTextField namevar;
     private javax.swing.JPasswordField passvar;
     private javax.swing.JComboBox<String> questvar;
     private javax.swing.JTextField rollvar;
+    private javax.swing.JTable tableStudent;
     // End of variables declaration//GEN-END:variables
 }

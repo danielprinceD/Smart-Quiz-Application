@@ -16,7 +16,7 @@ public class Login extends javax.swing.JPanel {
      final private String username = "root";
      final private String password = "";
      final private String database_name = "quiz";
-     final private String table_name = "user";
+     final private String table_name = "users";
      Connection con;
      PreparedStatement pst;
     /**

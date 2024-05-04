@@ -11,6 +11,7 @@ import Home.Home;
 public class UserHome extends javax.swing.JFrame {
     Profile p = new Profile();
     QuizPanel qp = new QuizPanel();
+     LeaderBoard lb = new LeaderBoard();
     /**
      * Creates new form UserHome
      */
@@ -192,6 +193,7 @@ public class UserHome extends javax.swing.JFrame {
     private void profilebtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profilebtnMouseClicked
         try{
             changeable.setVisible(false);
+            lb.setVisible(false);
             qp.setVisible(false);
             p.setVisible(true);
             this.add(p);
@@ -210,8 +212,8 @@ public class UserHome extends javax.swing.JFrame {
     private void homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_homeMouseClicked
             try{
             changeable.setVisible(false);
+            lb.setVisible(false );
             p.setVisible(false);
-            
             qp.setVisible(true);
             this.add(qp);
             
@@ -238,7 +240,20 @@ public class UserHome extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void quizbtn1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_quizbtn1MouseClicked
-        // TODO add your handling code here:
+       
+       try{
+            changeable.setVisible(false);
+            qp.setVisible(false);
+            p.setVisible(false);
+            lb.setVisible(true);
+            this.add(lb);
+            
+        }catch(Exception ex)
+        {
+            System.out.println(ex);
+        }
+        
+        
     }//GEN-LAST:event_quizbtn1MouseClicked
 
     private void quizbtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quizbtn1ActionPerformed

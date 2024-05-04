@@ -20,6 +20,7 @@ public class RecoveryPassword extends javax.swing.JPanel {
      final private String password = "";
      final private String database_name = "quiz";
      final private String table_name = "user";
+
      Connection conn;
      PreparedStatement pst;
     /**
@@ -150,22 +151,7 @@ public class RecoveryPassword extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-        
-//        try {
-//            
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//            conn = DriverManager.getConnection("jdbc:mysql://localhost/"+database_name, username,password);
-//            pst = conn.prepareStatement("select question, answer from"+ table_name +" where id =? ");
-//            pst.setString(1, Home.USER);
-//            pst.setInt(2, strength);
-//            pst.setInt(3, id);
-//            pst.executeUpdate();
-//            
-//            textBName.setText("");
-//            textBStrength.setText("");
-//            textBName.requestFocus();
-//            tableRecords();
-//            JOptionPane.showMessageDialog(this, "Batch Updated Successfully...." );
+
 //        } catch (ClassNotFoundException ex) {
 //            Logger.getLogger(ManageQuiz.class.getName()).log(Level.SEVERE, null, ex);
 //        } catch (SQLException ex) {

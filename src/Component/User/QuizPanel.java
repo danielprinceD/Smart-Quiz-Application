@@ -51,8 +51,8 @@ DefaultTableModel dtm;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://localhost/"+database_name, username,password);
-            pst = conn.prepareStatement("select * from "+table_name+ " where assignedto = ?");
-            pst.setString(1,Home.BATCH);
+            pst = conn.prepareStatement("select * from managequiz");
+            
             rs = pst.executeQuery();
             metaData = rs.getMetaData();
             
@@ -61,35 +61,21 @@ DefaultTableModel dtm;
             dtm = (DefaultTableModel) quiztable.getModel();
             dtm.setRowCount(0);
             
+            
+            
             while(rs.next()){
-                
-                pst = conn.prepareStatement("select duration from "+"managequiz"+ " where name = ?");
-                pst.setString(1, rs.getString("quizname"));
+                pst = conn.prepareStatement("select * from question where quizid = ?");
+                pst.setInt(1, rs.getInt("id"));
+                int  num = 0;
                 rs2 = pst.executeQuery();
-                int duration = 0;
-                
-                while(rs2.next()){
-                    duration = rs2.getInt("duration");
-                }
-                
-                
-                pst = conn.prepareStatement("select * from "+table_name+ " where quizname = ?");
-                pst.setString(1,rs.getString("quizname"));
-                rs3 = pst.executeQuery();
-                metaData3 = rs3.getMetaData();
-                
-                int c = 0;
-                
-                while(rs3.next()){
-                    ++c;
-                }
-                
+                while(rs2.next())num++;
+            
                 
                 Vector v = new Vector();
                 for(int i = 0; i <= count; i++){
-                    v.add(rs.getString("quizname"));
-                    v.add(c);
-                    v.add(duration);
+                    v.add(rs.getString("name"));
+                    v.add(num);
+                    v.add(rs.getString("id"));
                 }
                 dtm.addRow(v);
             }
@@ -185,7 +171,7 @@ DefaultTableModel dtm;
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
             
         if(QuizConsole.ID != 0)
-        {
+        { 
             QuizConsole qp = new QuizConsole();
             UserHome uh = new UserHome();
             qp.setVisible(true);
@@ -200,7 +186,7 @@ DefaultTableModel dtm;
 
     private void quiztableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_quiztableMouseClicked
        
-        try { QuizConsole.ID =(int) dtm.getValueAt(quiztable.getSelectedRow(), 1); }
+        try { QuizConsole.ID = Integer.parseInt((String) dtm.getValueAt(quiztable.getSelectedRow(),2 )); }
        catch(Exception e) {JOptionPane.showMessageDialog(this , e.getMessage() , "Exception" , 2 );}
     }//GEN-LAST:event_quiztableMouseClicked
 

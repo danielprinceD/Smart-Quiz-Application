@@ -19,9 +19,10 @@ public class Home extends javax.swing.JFrame {
     public static int ID = 0;
     public static String USER = null;
     public static String BATCH = null;
+    public static String QUESTION = null;
 
-        Login log = new Login();
-        Register reg = new Register();
+        public static Login log = new Login();
+        public static Register reg = new Register();
     /**
      * Creates new form Register
      */
@@ -198,8 +199,6 @@ public class Home extends javax.swing.JFrame {
         reg.setVisible(false);
         log.setVisible(true);
         jPanel2.add(log);
-        
-        
     }//GEN-LAST:event_jButton3MouseClicked
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked

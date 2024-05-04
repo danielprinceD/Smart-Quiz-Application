@@ -41,7 +41,7 @@ public class Login extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         passvar = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnForget = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -117,12 +117,12 @@ public class Login extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(42, 115, 103, 0);
         add(jButton1, gridBagConstraints);
 
-        jButton2.setBackground(new java.awt.Color(204, 204, 204));
-        jButton2.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
-        jButton2.setText("Forget Password");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnForget.setBackground(new java.awt.Color(204, 204, 204));
+        btnForget.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 14)); // NOI18N
+        btnForget.setText("Forget Password");
+        btnForget.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnForgetActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -133,7 +133,7 @@ public class Login extends javax.swing.JPanel {
         gridBagConstraints.ipady = 7;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(42, 18, 103, 134);
-        add(jButton2, gridBagConstraints);
+        add(btnForget, gridBagConstraints);
 
         jLabel3.setFont(new java.awt.Font("Copperplate Gothic Bold", 0, 18)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -149,9 +149,10 @@ public class Login extends javax.swing.JPanel {
         add(jLabel3, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnForgetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnForgetActionPerformed
+        RecoveryPasswordGetUser r = new  RecoveryPasswordGetUser();
+        r.setVisible(true);
+    }//GEN-LAST:event_btnForgetActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        
@@ -221,9 +222,9 @@ public class Login extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnForget;
     private javax.swing.JTextField emailvar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

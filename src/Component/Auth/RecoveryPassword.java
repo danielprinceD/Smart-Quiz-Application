@@ -4,6 +4,8 @@
  */
 package Component.Auth;
 import java.sql.*;
+
+import Home.Home;
 import javax.swing.JOptionPane;
 import Component.Admin.*;
 import java.util.logging.Level;
@@ -18,7 +20,7 @@ public class RecoveryPassword extends javax.swing.JPanel {
      final private String password = "";
      final private String database_name = "quiz";
      final private String table_name = "user";
-     Connection con;
+     Connection conn;
      PreparedStatement pst;
     /**
      * Creates new form Login
@@ -149,26 +151,26 @@ public class RecoveryPassword extends javax.swing.JPanel {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         
-        try {
-            
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/"+database_name, username,password);
-            pst = conn.prepareStatement("select question, answer from"+ table_name +" where id =? ");
-            pst.setString(1, batch);
-            pst.setInt(2, strength);
-            pst.setInt(3, id);
-            pst.executeUpdate();
-            
-            textBName.setText("");
-            textBStrength.setText("");
-            textBName.requestFocus();
-            tableRecords();
-            JOptionPane.showMessageDialog(this, "Batch Updated Successfully...." );
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ManageQuiz.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(ManageQuiz.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            conn = DriverManager.getConnection("jdbc:mysql://localhost/"+database_name, username,password);
+//            pst = conn.prepareStatement("select question, answer from"+ table_name +" where id =? ");
+//            pst.setString(1, Home.USER);
+//            pst.setInt(2, strength);
+//            pst.setInt(3, id);
+//            pst.executeUpdate();
+//            
+//            textBName.setText("");
+//            textBStrength.setText("");
+//            textBName.requestFocus();
+//            tableRecords();
+//            JOptionPane.showMessageDialog(this, "Batch Updated Successfully...." );
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(ManageQuiz.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (SQLException ex) {
+//            Logger.getLogger(ManageQuiz.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_btnSubmitActionPerformed
 
 

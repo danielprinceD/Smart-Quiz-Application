@@ -33,7 +33,7 @@ Welcome to the Students App project repository! This project is a comprehensive 
 
 To set up and run the Students App on your local machine, follow these steps:
 
-1. Clone this repository: `git clone https://github.com/YourUsername/Students-App.git`
+1. Clone this repository
 2. Navigate to the project directory: `cd Students-App`
 3. Open the project in your Java IDE (e.g., IntelliJ IDEA, Eclipse).
 4. Run the application.
